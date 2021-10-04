@@ -272,39 +272,48 @@ fun! YaarpRect() range abort
     let l:rcs = l:rct
   endif
   
-  echo "RectBounds: " . string([l:rrs,l:rcs,l:rre,l:rce])
-  
-  for l:r in [ l:rrs, l:rre ]
+  let l:coloff = l:rce - l:rcs
+  let l:rowoff = l:rre - l:rrs
 
-    for l:x in range( l:rcs + 1 , l:rce - 1 )
-      
-      call cursor(l:r,l:x)
-      call YaarpPutChar( YaarpChooseGlyph('h') )
+  echo "RectBounds: " . string([l:rrs,l:rcs,l:rre,l:rce]) . ", curr: " . string( getpos('.')[1:2] ) . ", rowoff: " . l:rowoff . ",coloff: " . l:coloff
 
-    endfor
+  for l:c in [ l:rcs, l:rce ]
+    
+    for l:y in range( l:rrs + 1, l:rre - 1 )
 
-    for l:y in range( l:rrs + 1, l:rre - 1  )
-       call cursor(l:y, l:rcs) 
-       call YaarpPutChar( YaarpChooseGlyph('v'))
+      echo l:c . "," . l:y
+      call YaarpJumpCursor( l:y, l:c )
+      call YaarpPutChar( YaarpChooseGlyph('v') )
 
-       call cursor(l:y,l:rce) 
-       call YaarpPutChar( YaarpChooseGlyph('v') ) 
     endfor
 
   endfor
 
 
-  call cursor(l:rre,l:rce) 
-  call YaarpPutChar( YaarpChooseGlyph('br') ) ", 0, len( YaarpChooseGlyph('br') ) ) 
+  for l:r in [ l:rrs, l:rre ]
 
-  call cursor(l:rrs,l:rce)
-  call YaarpPutChar( YaarpChooseGlyph('tr') ) ", 0, len( YaarpChooseGlyph('tl') ) ) 
-  
-  call cursor(l:rrs,l:rcs) 
+    for l:x in range( l:rcs + 1, l:rce - 1 ) 
+      
+      call YaarpJumpCursor(l:r, l:x ) 
+      call YaarpPutChar( YaarpChooseGlyph('h') )
+
+    endfor
+
+
+  endfor
+
+
+  call YaarpJumpCursor(l:rrs,l:rcs) 
   call YaarpPutChar( YaarpChooseGlyph('tl') ) ", 0, len( YaarpChooseGlyph('tr') ) ) 
 
-  call cursor(l:rre,l:rcs) 
+  call YaarpJumpCursor(l:rrs,l:rce)
+  call YaarpPutChar( YaarpChooseGlyph('tr') ) ", 0, len( YaarpChooseGlyph('tl') ) ) 
+  
+  call YaarpJumpCursor(l:rre,l:rcs) 
   call YaarpPutChar( YaarpChooseGlyph('bl') ) ", 0, len( YaarpChooseGlyph('bl') ) ) 
+
+  call YaarpJumpCursor(l:rre,l:rce) 
+  call YaarpPutChar( YaarpChooseGlyph('br') ) ", 0, len( YaarpChooseGlyph('br') ) ) 
 
 endfunction
 
