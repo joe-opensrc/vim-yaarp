@@ -100,6 +100,14 @@ let s:chooser.ts['ascii'].tr = '+' " '┐'
 let s:chooser.ts['ascii'].bl = '+' " '└'
 let s:chooser.ts['ascii'].br = '+' " '┘'
 
+fun! YaarpJumpCursor(...)
+
+  let l:r = get( a:, 1,  0  )
+  let l:c = get( a:, 2,  0  )
+
+  exe 'norm! ' . l:r . 'G' . l:c . '|'
+
+endfunction
 
 fun! YaarpJumpCursorRel(...)
 
